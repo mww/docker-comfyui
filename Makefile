@@ -5,11 +5,11 @@ REPO_NAMESPACE          ?= jamesbrink
 REPO_USERNAME           ?= jamesbrink
 REPO_API_URL            ?= https://hub.docker.com/v2
 IMAGE_NAME              ?= comfyui
-CUDA_VERSION            ?= 12.2.2
+CUDA_VERSION            ?= 12.6.3
 BASE_IMAGE              ?= nvidia/cuda:$(CUDA_VERSION)-runtime-ubuntu22.04
 MODELS                  ?= false
 SED                     := $(shell [[ `command -v gsed` ]] && echo gsed || echo sed)
-VERSION                 := v0.0.8
+VERSION                 := v0.3.9
 UI_MANAGER_VERSION      ?= main
 
 # Default target is to build container

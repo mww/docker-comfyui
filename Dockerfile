@@ -1,16 +1,20 @@
-ARG BASE_IMAGE=nvidia/cuda:12.2.2-runtime-ubuntu22.04
+ARG BASE_IMAGE=nvidia/cuda:12.6.3-runtime-ubuntu22.04
 FROM ${BASE_IMAGE} AS base
 
 # Install deps
 RUN set -xe; \
     apt update && apt install -y \
         bash-completion \
+        build-essential \
+        cmake \
         curl \
         ffmpeg \
         git \
         iproute2 \
         libgl1-mesa-glx \
         libglib2.0-0 \
+        ninja-build \
+        pkg-config \
         python-is-python3 \
         python3 \
         python3-pip \
@@ -30,7 +34,7 @@ RUN set -xe; \
     mkdir -p /app;
 
 # Setup ComfyUI
-ARG VERSION=v0.0.8
+ARG VERSION=v0.3.9
 RUN set -xe; \
     git clone https://github.com/comfyanonymous/ComfyUI.git /app; \
     cd /app; \
