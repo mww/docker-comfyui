@@ -23,6 +23,7 @@ RUN set -xe; \
         python3 \
         python3-opencv \
         python3-pip \
+        python3-psutil \
         rsync \
         sudo \
         unzip \
@@ -71,7 +72,7 @@ RUN set -xe; \
 LABEL \
     org.opencontainers.image.authors="James Brink <brink.james@gmail.com>" \
     org.opencontainers.image.description="ComfyUI Interface for Stable Diffusion" \
-    org.opencontainers.image.revision="0" \
+    org.opencontainers.image.revision="1" \
     org.opencontainers.image.source="https://github.com/jamesbrink/comfyui" \
     org.opencontainers.image.title="comfyui" \
     org.opencontainers.image.vendor="jamesbrink" \

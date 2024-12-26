@@ -43,3 +43,4 @@ jobs:
           tags: |
             jamesbrink/comfyui:${{ github.sha }}
             jamesbrink/comfyui:${{ env.BRANCH_NAME }}
+            jamesbrink/comfyui:v0.3.9

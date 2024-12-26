@@ -19,6 +19,10 @@ echo -e "#######################################################################
 yes N | comfy tracking disable
 comfy --install-completion
 
+# Install custom nodes
+echo "Installing custom nodes..."
+comfy node install --mode remote ComfyUI-Crystools;
+
 if [ $# -eq 0 ]; then
 	flags="--listen --port 8188 --preview-method auto"
 	echo "Start flags: $flags"
