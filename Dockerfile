@@ -20,6 +20,7 @@ RUN set -xe; \
         python3-pip \
         rsync \
         sudo \
+        unzip \
         vim \
         wget; \
     apt clean; \
