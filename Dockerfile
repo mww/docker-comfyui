@@ -1,6 +1,9 @@
 ARG BASE_IMAGE=nvidia/cuda:12.6.3-runtime-ubuntu22.04
 FROM ${BASE_IMAGE} AS base
 
+# Prevent interactive prompts during build
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Install deps
 RUN set -xe; \
     apt update && apt install -y \
@@ -13,10 +16,12 @@ RUN set -xe; \
         iproute2 \
         libgl1-mesa-glx \
         libglib2.0-0 \
+        libopencv-dev \
         ninja-build \
         pkg-config \
         python-is-python3 \
         python3 \
+        python3-opencv \
         python3-pip \
         rsync \
         sudo \
@@ -95,7 +100,7 @@ RUN set -xe; \
 EXPOSE 8188
 
 # Volumes
-VOLUME [ "/comfyui", "/comfyui/models", "/comfyui/output", "/comfyui/input" ]
+VOLUME [ "/comfyui", "/comfyui/models", "/comfyui/output", "/comfyui/input", "/comfyui/user" ]
 
 # Set the entrypoint.
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
