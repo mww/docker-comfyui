@@ -1,4 +1,4 @@
-# ComfyUI (Stable Diffusion)
+# Docker Image for ComfyUI (Stable Diffusion)
 
 ## About
 
