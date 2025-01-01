@@ -14,9 +14,19 @@ RUN set -xe; \
         ffmpeg \
         git \
         iproute2 \
+        libbz2-dev \
+        libgl1-mesa-dev \
         libgl1-mesa-glx \
         libglib2.0-0 \
+        libglu1-mesa-dev \
+        libglvnd-dev \
         libopencv-dev \
+        libx11-dev \
+        libxcursor-dev \
+        libxi-dev \
+        libxinerama-dev \
+        libxrandr-dev \
+        mesa-common-dev \
         ninja-build \
         pkg-config \
         python-is-python3 \
