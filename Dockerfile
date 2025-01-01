@@ -15,11 +15,15 @@ RUN set -xe; \
         git \
         iproute2 \
         libbz2-dev \
+        libegl1 \
+        libgl1 \
         libgl1-mesa-dev \
         libgl1-mesa-glx \
         libglib2.0-0 \
         libglu1-mesa-dev \
         libglvnd-dev \
+        libglx0 \
+        libopengl0 \
         libopencv-dev \
         libx11-dev \
         libxcursor-dev \
@@ -27,6 +31,7 @@ RUN set -xe; \
         libxinerama-dev \
         libxrandr-dev \
         mesa-common-dev \
+        mesa-utils \
         ninja-build \
         pkg-config \
         python-is-python3 \
@@ -38,7 +43,9 @@ RUN set -xe; \
         sudo \
         unzip \
         vim \
-        wget; \
+        wget \
+        xauth \
+        xvfb; \
     apt clean; \
     rm -rf /var/lib/apt/lists/*; \
     rm -rf /var/cache/apt;
@@ -90,8 +97,11 @@ LABEL \
 
 # Setup our environment variables.
 ENV \
+    DISPLAY=:99 \
     HOME="/comfyui" \
+    NVIDIA_DRIVER_CAPABILITIES=all \
     PATH="/usr/local/bin:/comfyui/.local/bin:$PATH" \
+    PYTHONUNBUFFERED=1 \
     VERSION="${VERSION}"
 
 # Drop down to our unprivileged user.
