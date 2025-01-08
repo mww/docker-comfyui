@@ -23,13 +23,11 @@ base:
 		--build-arg BASE_IMAGE=$(BASE_IMAGE) \
 		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--build-arg VERSION=$(VERSION) \
-		--tag $(REPO_NAMESPACE)/$(IMAGE_NAME):latest \
 		--tag $(REPO_NAMESPACE)/$(IMAGE_NAME):$(VERSION) \
 		--target=base \
 		--file Dockerfile .; \
 
 push-base: base
-	docker push  $(REPO_NAMESPACE)/$(IMAGE_NAME):latest; \
 	docker push  $(REPO_NAMESPACE)/$(IMAGE_NAME):$(VERSION);
 
 .PHONY: sd-1.5

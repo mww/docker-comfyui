@@ -11,7 +11,6 @@ RUN set -xe; \
         build-essential \
         cmake \
         curl \
-        ffmpeg \
         git \
         iproute2 \
         libbz2-dev \
@@ -23,8 +22,8 @@ RUN set -xe; \
         libglu1-mesa-dev \
         libglvnd-dev \
         libglx0 \
-        libopengl0 \
         libopencv-dev \
+        libopengl0 \
         libx11-dev \
         libxcursor-dev \
         libxi-dev \
@@ -34,12 +33,16 @@ RUN set -xe; \
         mesa-utils \
         ninja-build \
         pkg-config \
+        pkg-config \
         python-is-python3 \
         python3 \
+        python3-dev \
         python3-opencv \
+        python3-pip \
         python3-pip \
         python3-psutil \
         rsync \
+        software-properties-common \
         sudo \
         unzip \
         vim \
@@ -50,12 +53,50 @@ RUN set -xe; \
     rm -rf /var/lib/apt/lists/*; \
     rm -rf /var/cache/apt;
 
+# Remove any existing FFmpeg packages
+# RUN set -xe; \
+#     apt-get remove -y ; \
+#         ffmpeg \
+#         libavcodec-dev \ 
+#         libavdevice-dev \
+#         libavfilter-dev \
+#         libavformat-dev \
+#         libavutil-dev \
+#         libswresample-dev \
+#         libswscale-dev
+
+# Add repositories
+RUN add-apt-repository universe && \
+    add-apt-repository ppa:ubuntuhandbook1/ffmpeg6
+
+# Install FFmpeg and development packages
+RUN set -xe; \
+    apt-get update && apt-get install -y \
+        ffmpeg \
+        libavcodec-dev \
+        libavdevice-dev \
+        libavfilter-dev \
+        libavformat-dev \
+        libavutil-dev \
+        libswresample-dev \
+        libswscale-dev; \
+    apt clean; \
+    rm -rf /var/lib/apt/lists/*; \
+    rm -rf /var/cache/apt;
+
+# Install av package
+RUN pip install --no-cache-dir av --no-binary av
+
 # Create our group & user.
 RUN set -xe; \
     useradd -u 1000 -g 100 -G sudo -r -d /comfyui -s /bin/sh comfyui; \
     echo "comfyui ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers; \
     mkdir -p /comfyui; \
     mkdir -p /app;
+
+# Install Rust using rustup
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Setup ComfyUI
 ARG VERSION=v0.3.10
