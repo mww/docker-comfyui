@@ -49,28 +49,8 @@ RUN set -xe; \
         wget \
         xauth \
         xvfb; \
-    apt clean; \
-    rm -rf /var/lib/apt/lists/*; \
-    rm -rf /var/cache/apt;
-
-# Remove any existing FFmpeg packages
-# RUN set -xe; \
-#     apt-get remove -y ; \
-#         ffmpeg \
-#         libavcodec-dev \ 
-#         libavdevice-dev \
-#         libavfilter-dev \
-#         libavformat-dev \
-#         libavutil-dev \
-#         libswresample-dev \
-#         libswscale-dev
-
-# Add repositories
-RUN add-apt-repository universe && \
-    add-apt-repository ppa:ubuntuhandbook1/ffmpeg6
-
-# Install FFmpeg and development packages
-RUN set -xe; \
+    add-apt-repository universe; \
+    add-apt-repository ppa:ubuntuhandbook1/ffmpeg6; \
     apt-get update && apt-get install -y \
         ffmpeg \
         libavcodec-dev \
@@ -82,10 +62,11 @@ RUN set -xe; \
         libswscale-dev; \
     apt clean; \
     rm -rf /var/lib/apt/lists/*; \
-    rm -rf /var/cache/apt;
+    rm -rf /var/cache/apt; \
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y; \
+    pip install --no-cache-dir av --no-binary av;
 
-# Install av package
-RUN pip install --no-cache-dir av --no-binary av
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Create our group & user.
 RUN set -xe; \
@@ -93,10 +74,6 @@ RUN set -xe; \
     echo "comfyui ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers; \
     mkdir -p /comfyui; \
     mkdir -p /app;
-
-# Install Rust using rustup
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Setup ComfyUI
 ARG VERSION=v0.3.10
