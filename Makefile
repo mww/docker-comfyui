@@ -9,7 +9,8 @@ CUDA_VERSION            ?= 12.6.3
 BASE_IMAGE              ?= nvidia/cuda:$(CUDA_VERSION)-devel-ubuntu22.04
 MODELS                  ?= false
 SED                     := $(shell [[ `command -v gsed` ]] && echo gsed || echo sed)
-VERSION                 := v0.3.10
+BUILD_DATE              := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
+VERSION                 := v0.3.12
 UI_MANAGER_VERSION      ?= main
 
 # Default target is to build container

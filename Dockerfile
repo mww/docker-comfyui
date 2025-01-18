@@ -76,7 +76,7 @@ RUN set -xe; \
     mkdir -p /app;
 
 # Setup ComfyUI
-ARG VERSION=v0.3.10
+ARG VERSION=v0.3.12
 RUN set -xe; \
     git clone https://github.com/comfyanonymous/ComfyUI.git /app; \
     cd /app; \
@@ -94,6 +94,7 @@ RUN set -xe; \
     git checkout ${UI_MANAGER_VERSION}; \
     pip install --no-cache-dir -r requirements.txt;
 
+ARG BUILD_DATE
 # Copy our entrypoint into the container.
 COPY ./runtime-assets /
 
@@ -111,7 +112,8 @@ LABEL \
     org.opencontainers.image.source="https://github.com/jamesbrink/comfyui" \
     org.opencontainers.image.title="comfyui" \
     org.opencontainers.image.vendor="jamesbrink" \
-    org.opencontainers.image.version="${VERSION}"
+    org.opencontainers.image.version="${VERSION}" \
+    org.opencontainers.image.created="${BUILD_DATE}"
 
 # Setup our environment variables.
 ENV \
