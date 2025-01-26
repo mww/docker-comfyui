@@ -50,7 +50,6 @@ RUN set -xe; \
         xauth \
         xvfb; \
     add-apt-repository universe; \
-    add-apt-repository ppa:ubuntuhandbook1/ffmpeg6; \
     apt-get update && apt-get install -y \
         ffmpeg \
         libavcodec-dev \
@@ -59,12 +58,12 @@ RUN set -xe; \
         libavformat-dev \
         libavutil-dev \
         libswresample-dev \
-        libswscale-dev; \
+        libswscale-dev \
+        python3-av; \
     apt clean; \
     rm -rf /var/lib/apt/lists/*; \
     rm -rf /var/cache/apt; \
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y; \
-    pip install --no-cache-dir av --no-binary av;
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y;
 
 ENV PATH="/root/.cargo/bin:${PATH}"
 
