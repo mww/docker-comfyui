@@ -60,5 +60,81 @@ docker run -d --gpus all --network=host \
     --name comfyui jamesbrink/comfyui
 ```
 
+## Kubernetes Deployment
+
+The project includes Kubernetes manifests in the `k8s` directory for deploying ComfyUI in a Kubernetes cluster. The deployment requires a Kubernetes cluster with NVIDIA GPU support configured.
+
+### Prerequisites
+
+- Kubernetes cluster with NVIDIA GPU support (nvidia-device-plugin installed)
+- kubectl configured to access your cluster
+- Default StorageClass configured in your cluster
+
+### Deployment Steps
+
+1. Apply the PersistentVolumeClaims:
+```shell
+kubectl apply -f k8s/pvc.yaml
+```
+
+2. Deploy ComfyUI:
+```shell
+kubectl apply -f k8s/deployment.yaml
+```
+
+3. Create the service:
+```shell
+kubectl apply -f k8s/service.yaml
+```
+
+4. Access ComfyUI:
+
+   The service is configured to support both ClusterIP and NodePort access modes. Choose the most appropriate method for your environment:
+
+   a. **Port Forwarding (Testing)**:
+      ```shell
+      kubectl port-forward svc/comfyui 8188:8188
+      ```
+
+   b. **NodePort Access**:
+      ```shell
+      # Get the NodePort
+      kubectl get svc comfyui -o jsonpath='{.spec.ports[0].nodePort}'
+      # Access via any node's IP using the NodePort
+      # http://<node-ip>:<node-port>
+      ```
+
+   c. **Ingress (Recommended for Production)**:
+      ```shell
+      # Install NGINX Ingress Controller if not already installed
+      helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+      helm repo update
+      helm install ingress-nginx ingress-nginx/ingress-nginx
+
+      # Apply the ingress configuration
+      kubectl apply -f k8s/ingress.yaml
+      ```
+
+      The included ingress configuration provides:
+      - HTTP and HTTPS support (TLS configuration included but commented)
+      - WebSocket support for real-time updates
+      - Reasonable timeout values for long-running operations
+      - Easy customization for domains and TLS
+
+      To enable TLS:
+      1. Uncomment the TLS section in `k8s/ingress.yaml`
+      2. Replace `comfyui.example.com` with your domain
+      3. Provide your TLS certificate in a secret named `comfyui-tls`
+
+### Storage Configuration
+
+The deployment uses four PersistentVolumeClaims:
+- `comfyui-user-pvc`: 1GB for workflows and workspace settings
+- `comfyui-models-pvc`: 50GB for model files
+- `comfyui-output-pvc`: 10GB for generated images
+- `comfyui-input-pvc`: 10GB for input data
+
+Adjust the storage sizes in `k8s/pvc.yaml` according to your needs.
+
 [ComfyUI]: https://github.com/comfyanonymous/ComfyUI
 [ComfyUIManager]: https://github.com/ltdrdata/ComfyUI-Manager
