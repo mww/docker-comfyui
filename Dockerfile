@@ -75,7 +75,7 @@ RUN set -xe; \
     mkdir -p /app;
 
 # Setup ComfyUI
-ARG VERSION=v0.3.12
+ARG VERSION=v0.3.14
 RUN set -xe; \
     git clone https://github.com/comfyanonymous/ComfyUI.git /app; \
     cd /app; \
