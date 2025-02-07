@@ -18,7 +18,7 @@ spec:
       containers:
       - name: comfyui
         image: jamesbrink/comfyui:latest
-        command: ["python3", "/app/main.py"]
+        command: ["/usr/loca/bin/entrypoint.sh"]
         args:
         - "--listen"
         - "--port"
