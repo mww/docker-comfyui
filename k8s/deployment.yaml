@@ -1,9 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: comfyui
   labels:
     app: comfyui
+  name: comfyui
+  namespace: stable-diffusion
 spec:
   replicas: 1
   selector:
@@ -14,31 +15,34 @@ spec:
       labels:
         app: comfyui
     spec:
-      runtimeClassName: nvidia
       containers:
-      - name: comfyui
-        image: jamesbrink/comfyui:latest
-        command: ["/usr/loca/bin/entrypoint.sh"]
-        args:
-        - "--listen"
-        - "--port"
+      - args:
+        - --listen
+        - --port
         - "8188"
-        - "--preview-method"
-        - "auto"
+        - --preview-method
+        - auto
+        command:
+        - /usr/local/bin/entrypoint.sh
+        image: jamesbrink/comfyui:latest
+        imagePullPolicy: Always
+        name: comfyui
         ports:
         - containerPort: 8188
+          protocol: TCP
         resources:
           limits:
-            nvidia.com/gpu: 1
+            nvidia.com/gpu: "1"
         volumeMounts:
-        - name: user-data
-          mountPath: /comfyui/user
-        - name: models-data
-          mountPath: /comfyui/models
-        - name: output-data
-          mountPath: /comfyui/output
-        - name: input-data
-          mountPath: /comfyui/input
+        - mountPath: /comfyui/user
+          name: user-data
+        - mountPath: /comfyui/models
+          name: models-data
+        - mountPath: /comfyui/output
+          name: output-data
+        - mountPath: /comfyui/input
+          name: input-data
+      runtimeClassName: nvidia
       volumes:
       - name: user-data
         persistentVolumeClaim:
