@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=nvidia/cuda:12.6.3-devel-ubuntu22.04
+ARG BASE_IMAGE=nvidia/cuda:12.2.2-devel-ubuntu22.04
 FROM ${BASE_IMAGE} AS base
 
 # Prevent interactive prompts during build
@@ -92,6 +92,12 @@ RUN set -xe; \
     git fetch --all --tags; \
     git checkout ${UI_MANAGER_VERSION}; \
     pip install --no-cache-dir -r requirements.txt;
+
+RUN set -xe; \
+    git clone https://github.com/SeanScripts/ComfyUI-Unload-Model.git /app/custom_nodes/comfyui-unload-model; \
+    cd /app/custom_nodes/comfyui-unload-model; \
+    git fetch --all --tags; \
+    git checkout main;
 
 ARG BUILD_DATE
 # Copy our entrypoint into the container.
